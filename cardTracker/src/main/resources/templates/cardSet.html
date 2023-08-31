@@ -38,12 +38,18 @@
 							</a>
 						</td>
 						<td>
-							<a th:href="@{|/eliminaCarta/${carta.codiceCarta}|}">
+							<a th:href="@{|/eliminaCarta/${carta.codiceCarta}|}" id="deleteLink" 
+       								onclick="return showConfirmationDialog()">
 								<button type="button" class="btn btn-danger btn-sm">
 									<span class="glyphicon glyphicon-trash"></span>&nbsp;Elimina
 								</button>
 							</a>
 						</td>
+						<script>
+							function showConfirmationDialog() {
+							    return confirm("Vuoi davvero eliminare questa carta?");
+							}
+						</script>
 					</tr>
 				 </tbody>
 			 </table>
