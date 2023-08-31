@@ -1,0 +1,39 @@
+<div th:fragment="footer" xmlns:th="http://www.w3.org/1999/xhtml" 
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<!-- il nava mostrerà campi diversi dipendentemente dal ruolo del client -->
+	<nav>
+		<h3>Navigazione</h3>
+		<ul sec:authorize="hasRole('ADMIN')">
+			<li><a href="#">Home page</a></li>
+			<li><a href="#">YuGiOh!</a></li>
+			<li><a href="#">Pokemon</a></li>
+			<li><a href="#">Magic</a></li>
+			<li><a href="#">Monsters!</a></li>
+		</ul>
+	</nav>
+	
+	<nav>
+		<h3>Contatti</h3>
+		<ul>
+			<li><a href="#">Contatti</a></li>
+			<li><a href="#">Aiuto</a></li>
+			<li><a href="#">Info</a></li>
+			<li><a href="#">Site Map</a></li>
+		</ul>
+	</nav>
+	
+	<!-- section viene utilizzata solitamente per linkare risorse esterne -->
+	<section>
+		<h3>Social</h3>
+		<ul>
+			<li><a href="#">Facebook</a></li>
+			<li><a href="#">Instagram</a></li>
+			<li><a href="#">Twitter</a></li>
+			<li><a href="#">Pinterest</a></li>
+		</ul>
+	</section>
+	
+	<!-- sup -> apice -->
+	<p class="copyright">2023 Negozio On-Line<sup>&copy;</sup></p>
+	
+</div>

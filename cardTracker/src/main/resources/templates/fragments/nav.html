@@ -1,0 +1,67 @@
+<header th:fragment="navbar" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://thymeleaf.org/extras/spring-security">
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#menu">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <div sec:authorize="hasRole('ADMIN')">
+      		<a class="navbar-brand" href="/">CardTracker</a>
+      </div>
+    </div>
+    
+    <div class="collapse navbar-collapse" id="menu">
+		<ul th:if="${username} != null" class="nav navbar-nav">
+			<li>
+				<a href="/">
+					YuGiOh!
+				</a>
+			</li>
+			<li>
+				<a href="/pokemonSets">
+					Pokemon
+				</a>
+			</li>
+			<li>
+				<a href="/magicSets">
+					Magic
+				</a>
+			</li>
+			<li>
+				<a href="/monsterSets">
+					Monster!
+				</a>
+			</li>
+		</ul>
+		    
+		<div sec:authorize="hasRole('ADMIN')">
+			<ul th:if="${username} != null" class="nav navbar-nav navbar-right">
+				<li>
+					<a href="#" role="button">
+						<span class="glyphicon glyphicon-user"></span>
+						<span class="badge" style="background-color: black;">
+							<th:block th:text="${username}!=null ? ${username} : ''"></th:block>
+						</span>
+					</a>
+				</li>
+				<li>
+					<a href="/aggiungiCarta">
+						<span class="glyphicon glyphicon-plus"></span> Aggiungi Carta
+					</a>
+				</li>
+				<li>
+					<a href="/aggiungiSet">
+						<span class="glyphicon glyphicon-plus"></span> Aggiungi Set
+					</a>
+				</li>
+			</ul>
+		</div> 
+   </div>
+  </div>
+</nav>
+</header>
+
+
+

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/cdn :: cdn">
+<title>Home</title>
+</head>
+<body>
+	<div th:insert="fragments/nav :: navbar"></div>
+	<div class="container">
+		<div class="jumbotron" style="text-align: center; background-color: #DEB887;">
+			  <h2>Aggiungi una carta</h2>
+		  </div>
+		<form th:action="@{/aggiungiCarta}" method="post" class="form-horizontal" id="utenteFormMod" th:object="${carta}">
+			<!-- ----- Codice Carta ----- -->
+			<div class="form-group">
+				<label class="col-md-4 control-label">Codice</label>
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-barcode"></i>
+						</span>
+						<input id="codiceCarta" type="text" name="codiceCarta" placeholder="Codice..." class="form-control" th:field="*{codiceCarta}">
+					</div>
+				</div>
+				<div class="col-md-7 error" id="infoCodiceCarta"></div>
+			</div>
+						
+			<!-- ----- Prezzo Carta ----- -->
+			<div class="form-group">
+				<label class="col-md-4 control-label">Prezzo</label>
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-euro"></i>
+						</span>
+						<input id="prezzoCarta" type="number" name="prezzoCarta" placeholder="Prezzo..." class="form-control" th:field="*{prezzoCarta}" min="0" step="0.1">
+					</div>
+				</div>
+				<div class="col-md-7 error" id="infoPrezzoCarta"></div>
+			</div>
+			
+			<!-- ----- Nome Carta ----- -->
+			<div class="form-group">
+				<label class="col-md-4 control-label">Nome</label>
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-tags"></i>
+						</span>
+						<input id="nomeCarta" type="text" name="nomeCarta" placeholder="Nome..." class="form-control" th:field="*{nomeCarta}">
+					</div>
+				</div>
+				<div class="col-md-7 error" id="infoNomeCarta"></div>
+			</div>
+			
+			<!-- ----- Rarita Carta ----- -->
+			<div class="form-group">
+				<label class="col-md-4 control-label">Rarità</label>
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-certificate"></i>
+						</span>
+						<input id="raritaCarta" type="text" name="raritaCarta" placeholder="Rarità..." class="form-control" th:field="*{raritaCarta}">
+					</div>
+				</div>
+				<div class="col-md-7 error" id="infoRaritaCarta"></div>
+			</div>
+			
+			<!-- ----- Sigla Set di appartenenza ----- -->
+			<div class="form-group">
+				<label class="col-md-4 control-label">Sigla Set</label>
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-folder-open"></i>
+						</span>
+						<input id="siglaSet" type="text" name="siglaSet" placeholder="Sigla Set di appartenenza..." class="form-control">
+					</div>
+				</div>
+				<div class="col-md-7 error" id="infoSiglaSet"></div>
+			</div>
+			
+			<!-- ----- Descrizione Carta ----- -->
+			<div class="form-group">
+				<label class="col-md-4 control-label">Descrizione</label>
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-comment"></i>
+						</span>
+						<textarea id="descrizioneCarta" rows="3" cols="40" name="descrizioneCarta" placeholder="Descrizione..." 
+						class="form-control" style="resize:none;" th:field="*{descrizioneCarta}"></textarea>
+					</div>
+				</div>
+				<div class="col-md-7 error" id="infoDescrizioneCarta"></div>
+			</div>
+
+			<!-- Carta Posseduta -->
+			<div class="form-group">
+				<label class="col-md-4 control-label">Posseduta</label>
+				<div class="col-md-4 inputGroupContainer">
+				<div class="radio-container" style="display: flex; gap: 10px;">
+					<div class="radio">
+			            <label>
+			                <input id="cartaPosseduta" name="cartaPosseduta" type="radio" th:value="SI" class="radio-inline"> SI
+			            </label>
+			        </div>
+			        <div class="radio">
+			            <label>
+			                <input id="cartaPosseduta" name="cartaPosseduta" type="radio" th:value="NO" class="radio-inline" checked> NO
+			            </label>
+			        </div>
+				</div>
+				</div>
+			</div>
+			<div class="row">
+				<!-- allineo il pulstante con i campi di inserimento -->
+				<div class="col-md-4 col-md-offset-4">
+					<button type="submit" class="btn btn-warning">
+					Aggiungi carta&nbsp;&nbsp;<span class="glyphicon glyphicon-send"></span>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<footer th:include="fragments/footer :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/cdn :: cdn">
+</head>
+<body>
+	<div th:insert="fragments/nav :: navbar"></div>
+	<div class="container">
+		  <div class="jumbotron" style="text-align: center; background-color: #DEB887;">
+			  <h1 th:text="${nomeSet + ' (' + siglaSet + ')'}"></h1>
+		  </div>	  
+		  <div class="card-body" style="margin-top: 20px;">
+			  <table class="table table-hover">
+				 <thead>
+					<tr>
+						<th style="width: 200px;">Codice Carta</th>
+						<th style="width: 200px;">Nome Carta</th>
+						<th style="width: 200px;">Rarità Carta</th>
+						<th style="width: 200px;">Prezzo Carta (&euro;)</th>
+						<th style="width: 200px;">Descrizione Carta</th>
+						<th style="width: 200px;">Posseduta</th>
+						<th style="width: 200px;">Modifica</th>
+						<th style="width: 200px;">Elimina</th>
+					</tr>
+				 </thead>
+				 <tbody th:each="carta : ${listaCarteSet}">
+					<tr>
+						<td th:text="${carta.codiceCarta}"></td>
+						<td th:text="${carta.nomeCarta}"></td>
+						<td th:text="${carta.raritaCarta}"></td>
+						<td th:text="${carta.prezzoCarta}"></td>
+						<td th:text="${carta.descrizioneCarta!=null ? carta.descrizioneCarta : 'no desc'}"></td>
+						<td th:text="${carta.posseduta}"></td>
+						<td>
+							<a th:href="@{|/modificaCarta/${carta}|}">
+								<button type="button" class="btn btn-warning btn-sm">
+									<span class="glyphicon glyphicon-edit"></span>&nbsp;Modifica
+								</button>
+							</a>
+						</td>
+						<td>
+							<a th:href="@{|/eliminaCarta/${carta}|}">
+								<button type="button" class="btn btn-danger btn-sm">
+									<span class="glyphicon glyphicon-trash"></span>&nbsp;Elimina
+								</button>
+							</a>
+						</td>
+					</tr>
+				 </tbody>
+			 </table>
+		  </div>
+		</div>
+	</div>
+<footer th:include="fragments/footer :: footer"></footer>
+</body>
+</html>

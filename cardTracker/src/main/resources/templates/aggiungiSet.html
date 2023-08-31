@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/cdn :: cdn">
+<title>Home</title>
+</head>
+<body>
+	<div th:insert="fragments/nav :: navbar"></div>
+	<div class="container">
+		<div class="jumbotron" style="text-align: center; background-color: #DEB887;">
+			 <h2>Aggiungi un nuovo set</h2>
+		 </div>
+		<form th:action="@{/aggiungiSet}" method="post" class="form-horizontal" id="utenteFormMod" th:object="${cardSet}">
+			
+			<!-- ----- Sigla Set ----- -->
+			<div class="form-group">
+				<label class="col-md-4 control-label">Sigla</label>
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-tags"></i>
+						</span>
+						<input id="siglaSet" type="text" name="siglaSet" placeholder="Sigla..." class="form-control" th:field="*{siglaSet}">
+					</div>
+				</div>
+				<div class="col-md-7 error" id="infoSiglaSet"></div>
+			</div>
+			
+			<!-- ----- Nome Set ----- -->
+			<div class="form-group">
+				<label class="col-md-4 control-label">Nome</label>
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-tags"></i>
+						</span>
+						<input id="nomeSet" type="text" name="nomeSet" placeholder="Nome..." class="form-control" th:field="*{nomeSet}">
+					</div>
+				</div>
+				<div class="col-md-7 error" id="infoNomeSet"></div>
+			</div>
+			
+			<!-- ----- Nome Categoria ----- -->
+			<div class="form-group">
+				<label class="col-md-4 control-label">Categoria</label>
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-list"></i>
+						</span>
+						<input id="categoriaSet" type="text" name="categoriaSet" placeholder="Categoria..." class="form-control" th:field="*{categoriaSet}">
+					</div>
+				</div>
+				<div class="col-md-7 error" id="infoCategoriaSet"></div>
+			</div>
+			
+			<!-- ----- Numero Carte del Set ----- -->
+			<div class="form-group">
+				<label class="col-md-4 control-label">Numero carte del set</label>
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-sort-by-order"></i>
+						</span>
+						<input id="numeroCarta" type="number" name="numeroCarta" placeholder="Numero carte del set..." class="form-control" th:field="*{numeroCarteSet}" min="0">
+					</div>
+				</div>
+				<div class="col-md-7 error" id="infoNumeroCarteSet"></div>
+			</div>
+			
+			<!-- ----- Numero Carte Possedute ----- -->
+			<div class="form-group">
+				<label class="col-md-4 control-label">Numero carte possedute</label>
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-sort-by-order"></i>
+						</span>
+						<input id="numeroCartePossedute" type="number" name="numeroCartePossedute" placeholder="Numero carte possedute..." class="form-control" th:field="*{numeroCartePossedute}" min="0">
+					</div>
+				</div>
+				<div class="col-md-7 error" id="infoNumeroCartePossedute"></div>
+			</div>
+			
+			<!-- ----- Numero Carte Rimanenti ----- -->
+			<div class="form-group">
+				<label class="col-md-4 control-label">Numero carte rimanenti</label>
+				<div class="col-md-4 inputGroupContainer">
+					<div class="input-group">
+						<span class="input-group-addon">
+							<i class="glyphicon glyphicon-sort-by-order"></i>
+						</span>
+						<input id="numeroCarteRimanenti" type="number" name="numeroCarteRimanenti" placeholder="Numero carte rimanenti..." class="form-control" th:field="*{numeroCarteRimanenti}" min="0">
+					</div>
+				</div>
+				<div class="col-md-7 error" id="infoNumeroCarteRimanenti"></div>
+			</div>
+			
+			<div class="row">
+				<!-- allineo il pulstante con i campi di inserimento -->
+				<div class="col-md-4 col-md-offset-4">
+					<button type="submit" class="btn btn-warning">
+					Aggiungi set&nbsp;&nbsp;<span class="glyphicon glyphicon-send"></span>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<footer th:include="fragments/footer :: footer"></footer>
+</body>
+</html>

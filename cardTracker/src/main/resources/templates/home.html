@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/cdn :: cdn">
+</head>
+<body>
+	<div th:insert="fragments/nav :: navbar"></div>
+	<div class="container">
+		  <div class="jumbotron" style="text-align: center; background-color: #DEB887;">
+			  <h1 th:text="${nomeCategoria}"></h1>
+		  </div>	  
+		  <div class="card-body" style="margin-top: 20px;">
+			  <table class="table table-hover">
+				 <thead>
+					<tr>
+						<th style="width: 200px;">Sigla Set</th>
+						<th style="width: 200px;">Nome Set</th>
+						<th style="width: 200px;">Categoria Set</th>
+						<th style="width: 200px;">N° Carte Set</th>
+						<th style="width: 200px;">N° Possedute</th>
+						<th style="width: 200px;">N° Rimanenti</th>
+						<th style="width: 200px;">Modifica</th>
+						<th style="width: 200px;">Elimina</th>
+					</tr>
+				 </thead>
+				 <tbody th:each="cardSet : ${cardSets}">
+					<tr>
+						<td>
+							<a th:href="@{|/visualizzaSet/${cardSet.siglaSet}|}" style="color: inherit; text-decoration: none;">
+								<span style="font-style: italic;" th:text="${cardSet.siglaSet}"></span>
+							</a>
+						</td>
+						<td>
+							<a th:href="@{|/visualizzaSet/${cardSet.siglaSet}|}" style="color: inherit; text-decoration: none;">
+								<span style="font-style: italic;" th:text="${cardSet.nomeSet}"></span>
+							</a>
+						</td>
+						<td th:text="${cardSet.categoriaSet}"></td>
+						<td th:text="${cardSet.numeroCarteSet}"></td>
+						<td th:text="${cardSet.numeroCartePossedute}"></td>
+						<td th:text="${cardSet.numeroCarteRimanenti}"></td>
+						<td>
+							<a th:href="@{|/modificaCardSet/${cardSet}|}">
+								<button type="button" class="btn btn-warning btn-sm">
+									<span class="glyphicon glyphicon-edit"></span>&nbsp;Modifica
+								</button>
+							</a>
+						</td>
+						<td>
+							<a th:href="@{|/eliminaCardSet/${cardSet}|}">
+								<button type="button" class="btn btn-danger btn-sm">
+									<span class="glyphicon glyphicon-trash"></span>&nbsp;Elimina
+								</button>
+							</a>
+						</td>
+					</tr>
+				 </tbody>
+			 </table>
+		  </div>
+		</div>
+	</div>
+<footer th:include="fragments/footer :: footer"></footer>
+</body>
+</html>
