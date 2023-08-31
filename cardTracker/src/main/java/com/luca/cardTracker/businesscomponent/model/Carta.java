@@ -2,7 +2,6 @@ package com.luca.cardTracker.businesscomponent.model;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -34,9 +33,9 @@ public class Carta implements Serializable{
 	private String descrizioneCarta;
 	
 	@Column(nullable = false)
-	private boolean posseduta = false;
+	private boolean posseduta;
 	
-	@ManyToOne(cascade = CascadeType.ALL)  //Garantisce aggiornamento ed eliminazione a cascata dei record
+	@ManyToOne()
 	@JoinColumn(name = "id_cardSet") //Questo mi permette semplicemente di assegnare il nome alla fk
 	private CardSet cardSet;
 

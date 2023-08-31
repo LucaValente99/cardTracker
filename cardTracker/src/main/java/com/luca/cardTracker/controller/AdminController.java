@@ -78,15 +78,27 @@ public class AdminController {
 	}
 	
 	@PostMapping("/aggiungiCarta")
-	public String aggiungiCarta(Carta carta, @RequestParam String siglaSet) throws Exception {
+	public String aggiungiCarta(Carta carta, @RequestParam String siglaSet, @RequestParam(required = false) String cartaPosseduta) throws Exception {
 		
 		CardSet cardSet = null;
 		if(cardSetService.findBySiglaSet(siglaSet.trim()).isPresent()) {
 			cardSet = cardSetService.findBySiglaSet(siglaSet.trim()).get();
+			
+			if(cartaPosseduta.equals("SI"))
+				carta.setPosseduta(true);
+			else
+				carta.setPosseduta(false);
+			
 			carta.setCardSet(cardSet);
 		    cartaService.saveCarta(carta);
-		    cardSet.setNumeroCartePossedute(cardSet.getNumeroCartePossedute()+1);
-		    cardSet.setNumeroCarteRimanenti(cardSet.getNumeroCarteRimanenti()-1);
+		    
+		    if(carta.isPosseduta()) {
+		    	cardSet.setNumeroCartePossedute(cardSet.getNumeroCartePossedute()+1);
+			    cardSet.setNumeroCarteRimanenti(cardSet.getNumeroCarteRimanenti()-1);
+		    }	
+		    
+		    cardSetService.saveCardSet(cardSet);
+		    
 		}else {
 			throw new Exception("La sigla inserita non esiste!");
 		}
@@ -118,7 +130,105 @@ public class AdminController {
 		mv.addObject("nomeSet", cardSet.getNomeSet());
 		mv.addObject("siglaSet", cardSet.getSiglaSet());
 		mv.addObject("listaCarteSet", listaCarteSet);
-		mv.addObject("username", session.getAttribute("username"));
+		mv.addObject("username", session.getAttribute("utente_log"));
 		return mv;
+	}
+	
+	@GetMapping("/eliminaCarta/{codiceCarta}")
+	public String eliminaCarta(@PathVariable String codiceCarta) {
+		Carta carta = cartaService.findByCodice(codiceCarta).get();
+		CardSet cardSet = cardSetService.findBySiglaSet(carta.getCardSet().getSiglaSet()).get();
+		
+		cartaService.deleteCarta(carta);
+		
+		System.out.println();
+		if(carta.isPosseduta()) {
+			cardSet.setNumeroCartePossedute(cardSet.getNumeroCartePossedute()-1);
+			cardSet.setNumeroCarteRimanenti(cardSet.getNumeroCarteRimanenti()+1);
+		}
+		
+		cardSetService.saveCardSet(cardSet);
+		
+		if(cardSet.getCategoriaSet().equals("YuGiOh!"))
+			return "redirect:/";
+		else
+			return "redirect:/"+cardSet.getCategoriaSet();
+	}
+	
+	@GetMapping("/modificaCarta/{codiceCarta}")
+	public ModelAndView modificaCarta(@PathVariable String codiceCarta, HttpSession session) {
+		
+		ModelAndView mv = new ModelAndView("modificaCarta");
+		Carta carta = cartaService.findByCodice(codiceCarta).get();
+					
+		mv.addObject("carta", carta);
+		mv.addObject("username", session.getAttribute("utente_log"));
+		return mv;	
+	}
+	
+	@PostMapping("/modificaCarta")
+	public String modificaCarta(Carta carta, @RequestParam String siglaSet, @RequestParam(required = false) String cartaPosseduta) throws Exception {
+		
+		CardSet cardSet = null;
+		if(cardSetService.findBySiglaSet(siglaSet.trim()).isPresent()) {
+			cardSet = cardSetService.findBySiglaSet(siglaSet.trim()).get();
+			
+			Carta cTemp = cartaService.findByCodice(carta.getCodiceCarta()).get();
+			
+			if(cartaPosseduta.equals("SI") && !cTemp.isPosseduta()) {
+				carta.setPosseduta(true);
+				System.out.println(carta.isPosseduta());
+				cardSet.setNumeroCartePossedute(cardSet.getNumeroCartePossedute()+1);
+			    cardSet.setNumeroCarteRimanenti(cardSet.getNumeroCarteRimanenti()-1);
+			}
+			else if(cartaPosseduta.equals("NO") && cTemp.isPosseduta()) {
+				carta.setPosseduta(false);
+				cardSet.setNumeroCartePossedute(cardSet.getNumeroCartePossedute()-1);
+				cardSet.setNumeroCarteRimanenti(cardSet.getNumeroCarteRimanenti()+1);
+			}
+			
+			carta.setCardSet(cardSet);
+		    cartaService.saveCarta(carta);
+		   		    
+		    cardSetService.saveCardSet(cardSet);
+		    
+		}else {
+			throw new Exception("La sigla inserita non esiste!");
+		}
+		
+		return "redirect:/?nomeCategoria=" + cardSet.getCategoriaSet();
+	}
+	
+	@GetMapping("/modificaCardSet/{siglaSet}")
+	public ModelAndView modificaSet(@PathVariable String siglaSet, HttpSession session) {
+		
+		ModelAndView mv = new ModelAndView("modificaSet");
+		CardSet cardSet = cardSetService.findBySiglaSet(siglaSet).get();
+					
+		mv.addObject("cardSet", cardSet);
+		mv.addObject("username", session.getAttribute("utente_log"));
+		
+		return mv;	
+	}
+		
+	@PostMapping("/modificaCardSet")
+	public String modificaSet(CardSet cardSet) {
+	    cardSetService.saveCardSet(cardSet);	    
+		return "redirect:/?nomeCategoria=" + cardSet.getCategoriaSet();
+	}
+		
+	@GetMapping("/eliminaCardSet/{siglaSet}")
+	public String eliminaSet(@PathVariable String siglaSet, HttpSession session) {
+		
+		CardSet cardSet = cardSetService.findBySiglaSet(siglaSet).get();
+					
+		cardSetService.deleteCardSet(cardSet);
+		
+		if(cardSet.getCategoriaSet().equals("YuGiOh!"))
+			return "redirect:/";
+		
+		return "redirect:/" + cardSet.getCategoriaSet();
+		
+			
 	}
 }

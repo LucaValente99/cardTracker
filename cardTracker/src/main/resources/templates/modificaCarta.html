@@ -7,9 +7,9 @@
 	<div th:insert="fragments/nav :: navbar"></div>
 	<div class="container">
 		<div class="jumbotron" style="text-align: center; background-color: #DEB887;">
-			  <h2>Aggiungi una carta</h2>
+			  <h2 th:text="${carta.cardSet.siglaSet + ' - ' + carta.nomeCarta}"></h2>
 		  </div>
-		<form th:action="@{/aggiungiCarta}" method="post" class="form-horizontal" id="cartaForm" th:object="${carta}">
+		<form th:action="@{/modificaCarta}" method="post" class="form-horizontal" id="cartaFormMod" th:object="${carta}">
 			<!-- ----- Codice Carta ----- -->
 			<div class="form-group">
 				<label class="col-md-4 control-label">Codice</label>
@@ -74,7 +74,7 @@
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-folder-open"></i>
 						</span>
-						<input id="siglaSet" type="text" name="siglaSet" placeholder="Sigla Set di appartenenza..." class="form-control">
+						<input id="siglaSet" type="text" name="siglaSet" th:value="${carta.cardSet.siglaSet}" placeholder="Sigla Set di appartenenza..." class="form-control">
 					</div>
 				</div>
 				<div class="col-md-7 error" id="infoSiglaSet"></div>
@@ -117,7 +117,7 @@
 				<!-- allineo il pulstante con i campi di inserimento -->
 				<div class="col-md-4 col-md-offset-4">
 					<button type="submit" class="btn btn-warning">
-					Aggiungi carta&nbsp;&nbsp;<span class="glyphicon glyphicon-send"></span>
+					Modifica carta&nbsp;&nbsp;<span class="glyphicon glyphicon-send"></span>
 					</button>
 				</div>
 			</div>

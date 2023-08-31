@@ -31,14 +31,14 @@
 						<td th:text="${carta.descrizioneCarta!=null ? carta.descrizioneCarta : 'no desc'}"></td>
 						<td th:text="${carta.posseduta}"></td>
 						<td>
-							<a th:href="@{|/modificaCarta/${carta}|}">
+							<a th:href="@{|/modificaCarta/${carta.codiceCarta}|}">
 								<button type="button" class="btn btn-warning btn-sm">
 									<span class="glyphicon glyphicon-edit"></span>&nbsp;Modifica
 								</button>
 							</a>
 						</td>
 						<td>
-							<a th:href="@{|/eliminaCarta/${carta}|}">
+							<a th:href="@{|/eliminaCarta/${carta.codiceCarta}|}">
 								<button type="button" class="btn btn-danger btn-sm">
 									<span class="glyphicon glyphicon-trash"></span>&nbsp;Elimina
 								</button>

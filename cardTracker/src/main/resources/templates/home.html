@@ -39,14 +39,14 @@
 						<td th:text="${cardSet.numeroCartePossedute}"></td>
 						<td th:text="${cardSet.numeroCarteRimanenti}"></td>
 						<td>
-							<a th:href="@{|/modificaCardSet/${cardSet}|}">
+							<a th:href="@{|/modificaCardSet/${cardSet.siglaSet}|}">
 								<button type="button" class="btn btn-warning btn-sm">
 									<span class="glyphicon glyphicon-edit"></span>&nbsp;Modifica
 								</button>
 							</a>
 						</td>
 						<td>
-							<a th:href="@{|/eliminaCardSet/${cardSet}|}">
+							<a th:href="@{|/eliminaCardSet/${cardSet.siglaSet}|}">
 								<button type="button" class="btn btn-danger btn-sm">
 									<span class="glyphicon glyphicon-trash"></span>&nbsp;Elimina
 								</button>
