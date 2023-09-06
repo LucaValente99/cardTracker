@@ -8,8 +8,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Check;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table
@@ -17,13 +18,18 @@ public class Carta implements Serializable{
 	private static final long serialVersionUID = -1339961243177999631L;
 	
 	@Id
+	@Size(min=6, max=15, message = "da 6 a 15 caratteri (es. LOB-EN001)")
+	@NotBlank(message = "Il codice della carta non può essere nullo")
 	private String codiceCarta;
 	
+	@Size(min=2, max=30, message = "da 2 a 30 caratteri")
+	@NotBlank(message = "Il nome della carta non può essere nullo")
 	@Column(nullable = false)
 	private String nomeCarta;
 	
+	@NotBlank(message = "La rarità della carta non può essere nulla")
+	@Pattern(regexp = "(C|R|SR|UR|RS)", message="Valori accettati: 'C', 'R', 'SR', 'UR', 'RS'")
 	@Column(nullable = false)
-	@Check(constraints = "raritaCarta IN ('C', 'R', 'SR', 'UR', 'RS')")
 	private String raritaCarta;
 	
 	@Column
@@ -93,6 +99,5 @@ public class Carta implements Serializable{
 
 	public void setPosseduta(boolean posseduta) {
 		this.posseduta = posseduta;
-	}
-	
+	}	
 }

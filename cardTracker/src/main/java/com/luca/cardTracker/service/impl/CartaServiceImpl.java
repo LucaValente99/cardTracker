@@ -50,4 +50,9 @@ public class CartaServiceImpl implements CartaService {
 		return cartaRepository.findByCardSet(cardSet);
 	}
 
+	@Override
+	public List<Carta> findByCardSetOrderedByPrezzo(CardSet cardSet) {
+		return cartaRepository.findByCardSetOrderedByPrezzo(cardSet);
+	}
+
 }

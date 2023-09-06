@@ -9,7 +9,7 @@
 		<div class="jumbotron" style="text-align: center; background-color: #DEB887;">
 			  <h2>Aggiungi una carta</h2>
 		  </div>
-		<form th:action="@{/aggiungiCarta}" method="post" class="form-horizontal" id="cartaForm" th:object="${carta}">
+		<form th:action="@{/aggiungiCarta}" method="post" class="form-horizontal" id="cartaForm" th:object="${carta}" style="width: auto;">
 			<!-- ----- Codice Carta ----- -->
 			<div class="form-group">
 				<label class="col-md-4 control-label">Codice</label>
@@ -21,9 +21,14 @@
 						<input id="codiceCarta" type="text" name="codiceCarta" placeholder="Codice..." class="form-control" th:field="*{codiceCarta}">
 					</div>
 				</div>
-				<div class="col-md-7 error" id="infoCodiceCarta"></div>
+				<div class="col-md-4 col-md-offset-4" style="margin-bottom: -20px;">
+				    <div th:if="${#fields.hasErrors('codiceCarta')}" class="alert alert-danger">
+				        <p th:each="err : ${#fields.errors('codiceCarta')}" th:text="${err}"></p>
+				    </div>
+				</div>
+				<!--<div class="col-md-7 error" id="infoCodiceCarta"></div>-->
 			</div>
-						
+									
 			<!-- ----- Prezzo Carta ----- -->
 			<div class="form-group">
 				<label class="col-md-4 control-label">Prezzo</label>
@@ -49,7 +54,12 @@
 						<input id="nomeCarta" type="text" name="nomeCarta" placeholder="Nome..." class="form-control" th:field="*{nomeCarta}">
 					</div>
 				</div>
-				<div class="col-md-7 error" id="infoNomeCarta"></div>
+				<div class="col-md-4 col-md-offset-4" style="margin-bottom: -20px;">
+				    <div th:if="${#fields.hasErrors('nomeCarta')}" class="alert alert-danger">
+				        <p th:each="err : ${#fields.errors('nomeCarta')}" th:text="${err}"></p>
+				    </div>
+				</div>
+				<!--<div class="col-md-7 error" id="infoNomeCarta"></div>-->
 			</div>
 			
 			<!-- ----- Rarita Carta ----- -->
@@ -64,6 +74,11 @@
 					</div>
 				</div>
 				<div class="col-md-7 error" id="infoRaritaCarta"></div>
+				<div class="col-md-4 col-md-offset-4" style="margin-bottom: -20px;">
+				    <div th:if="${#fields.hasErrors('raritaCarta')}" class="alert alert-danger">
+				        <p th:each="err : ${#fields.errors('raritaCarta')}" th:text="${err}"></p>
+				    </div>
+				</div>
 			</div>
 			
 			<!-- ----- Sigla Set di appartenenza ----- -->

@@ -13,4 +13,5 @@ public interface CartaService {
 	boolean updateCarta(Carta carta);
 	Optional<Carta> findByCodice(String codice);
 	List<Carta> findByCardSet(CardSet cardSet);
+	List<Carta> findByCardSetOrderedByPrezzo(CardSet cardSet);
 }

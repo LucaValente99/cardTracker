@@ -1,13 +1,16 @@
 package com.luca.cardTracker.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.luca.cardTracker.businesscomponent.model.CardSet;
 import com.luca.cardTracker.businesscomponent.model.Carta;
+import com.luca.cardTracker.businesscomponent.model.comparator.CartaComparatorRarita;
 import com.luca.cardTracker.service.CardSetService;
 import com.luca.cardTracker.service.CartaService;
 
@@ -77,8 +81,34 @@ public class AdminController {
 		return mv;
 	}
 	
+	/*
+	 * @Valid @ModelAttribute("carta") Carta carta:
+		L'annotazione @Valid indica al framework di validare l'oggetto 
+		carta utilizzando le regole di validazione definite nella classe 
+		Carta o nelle classi associate alle proprietà di Carta.
+		Se carta non è valido secondo queste regole di validazione, 
+		verranno registrati errori nel BindingResult associato a carta.
+		
+		BindingResult br:
+		BindingResult è un oggetto utilizzato per raccogliere informazioni sugli errori 
+		di validazione o di binding durante la fase di trasferimento dei dati tra il 
+		form HTML e l'oggetto Java (carta in questo caso).
+		Se @Valid trova errori di validazione nell'oggetto carta, questi errori vengono registrati in br.
+		Puoi successivamente verificare se ci sono errori e gestirli di conseguenza. Ad esempio,
+		nel codice che hai fornito, se br ha degli errori (br.hasErrors() restituisce true),
+		viene creato un oggetto ModelAndView per visualizzare nuovamente il form "aggiungiCarta"
+		 con i messaggi di errore appropriati.
+	 * */
 	@PostMapping("/aggiungiCarta")
-	public String aggiungiCarta(Carta carta, @RequestParam String siglaSet, @RequestParam(required = false) String cartaPosseduta) throws Exception {
+	public ModelAndView aggiungiCarta(HttpSession session, @Valid Carta carta, BindingResult br, @RequestParam String siglaSet, @RequestParam(required = false) String cartaPosseduta) throws Exception {
+		
+		if(br.hasErrors()) {
+			System.out.println(br.getAllErrors().get(0));
+			ModelAndView mv = new ModelAndView("aggiungiCarta");
+			mv.addObject("carta", carta);
+			mv.addObject("username", session.getAttribute("utente_log"));
+			return mv;
+		}
 		
 		CardSet cardSet = null;
 		if(cardSetService.findBySiglaSet(siglaSet.trim()).isPresent()) {
@@ -103,7 +133,7 @@ public class AdminController {
 			throw new Exception("La sigla inserita non esiste!");
 		}
 		
-		return "redirect:/?nomeCategoria=" + cardSet.getCategoriaSet();
+		return new ModelAndView("redirect:/?nomeCategoria=" + cardSet.getCategoriaSet());
 	}
 	
 	@GetMapping("/aggiungiSet")
@@ -227,8 +257,39 @@ public class AdminController {
 		if(cardSet.getCategoriaSet().equals("YuGiOh!"))
 			return "redirect:/";
 		
-		return "redirect:/" + cardSet.getCategoriaSet();
-		
-			
+		return "redirect:/" + cardSet.getCategoriaSet();		
 	}
+	
+	@PostMapping("/filtraRicerca")
+	public ModelAndView filtraRicerca(HttpSession session, @RequestParam String filtro, @RequestParam(defaultValue = "false") String posseduta, @RequestParam String siglaSet) {
+		ModelAndView mv = new ModelAndView("cardSet");
+		CardSet cardSet = cardSetService.findBySiglaSet(siglaSet).get();
+		List<Carta> listaCarteSet = null;
+				
+		switch(filtro) {
+			case "codiceCarta":
+				listaCarteSet = cartaService.findByCardSet(cardSet);
+				break;
+			case "rarita":
+				listaCarteSet = cartaService.findByCardSet(cardSet);
+				Collections.sort(listaCarteSet, new CartaComparatorRarita());
+				break;
+			case "prezzo":
+				listaCarteSet = cartaService.findByCardSetOrderedByPrezzo(cardSet);
+				break;
+			default:
+				break;
+		}
+		
+		
+		if(!posseduta.equals("true"))
+			listaCarteSet = listaCarteSet.stream().filter(carta -> !carta.isPosseduta()).toList();
+		
+		mv.addObject("nomeSet", cardSet.getNomeSet());
+		mv.addObject("siglaSet", cardSet.getSiglaSet());
+		mv.addObject("listaCarteSet", listaCarteSet);
+		mv.addObject("username", session.getAttribute("utente_log"));
+		return mv;
+	}
+	
 }
